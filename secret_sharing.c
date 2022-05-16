@@ -170,14 +170,14 @@ int main(int argc, char *argv[]) {
     int n = atoi(argv[2]);
     int k = atoi(argv[3]);
     char buff[1024];
-    
-    printf("Enter your secret: ");
+
+    printf("Enter secret key: ");
 
     if(fgets(buff, 1024, stdin) != NULL) {
       int secret_size = strlen(buff);
       uint8_t **shares = split((uint8_t *) buff, secret_size, n, k);
 
-      printf("Shares:\n");
+      printf("Shared keys:\n");
       for (int row = 0; row < n; row++) {
         printf("%s\n", arr_to_hex_str(shares[row], secret_size + 1));
       }
@@ -193,14 +193,12 @@ int main(int argc, char *argv[]) {
 
     uint8_t *reconstructed_secret = join(shares, secret_size, k);
 
-    printf("\nReconstructed secret: %s\n", (char *) reconstructed_secret);
+    printf("\nReconstructed secret key: %s\n", (char *) reconstructed_secret);
   } else {
     printf(
-      "usage: secret\n\n"
-      "1. Split a secret in n shares, so k are needed to reconstruct it:\n"
-      "$ secret split 10 3\n\n"
-      "2. Join k shares to reconstruct the original secret::\n"
-      "$ secret join SHARE_1 SHARE_2 ... SHARE_K\n\n"
+      "usage: secret_sharing\n\n"
+      "$ secret_sharing split 4 2\n\n"
+      "$ secret_sharing join <user1GeneratedKey> <user2GeneratedKey>\n\n"
     );
   }
 
